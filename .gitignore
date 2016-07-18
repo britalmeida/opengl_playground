@@ -1,0 +1,9 @@
+# Ignore all
+*
+# Un-ignore files with extensions and dirs
+!*.*
+!*/
+!Makefile
+
+*.o
+*~
