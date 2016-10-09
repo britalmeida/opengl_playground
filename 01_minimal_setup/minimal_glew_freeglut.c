@@ -29,6 +29,8 @@ SOFTWARE.
  *
  * Compiling this example:
  * Linux: gcc minimal_glew_freeglut.c -lGL -lGLEW -lglut -o minimal
+ * Mac OS: clang minimal_glew_freeglut.c -framework OpenGL -lglew -framework GLUT -Wno-deprecated -framework Cocoa -o minimal
+ *    Important note: Mac has the original glut version that is marked as deprecated, not the improved freeglut
  *
  * Requires OpenGL 3.2 and that GLEW and freeGLUT are installed or provided as includes for compilation
  */
@@ -182,11 +184,17 @@ void key_cb(unsigned char key, int x, int y)
 int main(int argc, char** argv)
 {
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_ALPHA);
-	glutInitWindowSize(250, 250);
-	glutInitWindowPosition(100, 100);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_ALPHA
+		#ifdef __APPLE__
+		GLUT_3_2_CORE_PROFILE
+		#endif
+	);
+	#ifndef __APPLE__ // apple ships with the old glut, instead of freeglut, and therefore does not have these functions
 	glutInitContextVersion(3, 2);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
+	#endif
+	glutInitWindowSize(250, 250);
+	glutInitWindowPosition(100, 100);
 	glutCreateWindow("OpenGL Test");
 
 	// GLEW
