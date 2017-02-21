@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2016 Inês Almeida
+Copyright (c) 2016-2017 Inês Almeida
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,7 @@ SOFTWARE.
  * Compiling this example:
  * Linux: gcc lodepng.c image_texture.c -lGL -lGLEW -lglfw -DLODEPNG_NO_COMPILE_CPP -o image_texture
  *
- * Requires OpenGL 3.2 and that GLEW and GLFW are installed or provided as includes for compilation
+ * Requires OpenGL 3.2, GLEW and GLFW to be installed or provided as includes for compilation.
  * Requires the included LodePNG library: http://lodev.org/lodepng/
  */
 
