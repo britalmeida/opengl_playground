@@ -22,8 +22,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-// gcc font_character.c -I/usr/include/freetype2 -lGL -lGLEW -lglfw -lfreetype -o font_character
+/*
+ * OpenGL Playground - Example of loading and rendering a glyph
+ *
+ * Compiling this example:
+ * Linux: gcc font_character.c -I/usr/include/freetype2 -lGL -lGLEW -lglfw -lfreetype -o font_character
+ *
+ * Requires OpenGL 3.2, GLEW and GLFW to be installed or provided as includes for compilation.
+ * Requires FreeType for font loading: https://www.freetype.org/
+ */
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -42,8 +49,11 @@ GLFWwindow* window;
 
 FT_Library ft_library;
 FT_Face ft_face;
-uint dpi = 72;
+const uint dpi = 72;
+const uint pt = 46;
 #define FONT_FILE "/usr/share/fonts/TTF/LiberationSans-Regular.ttf"
+const char char_to_display = 'a';
+
 
 typedef enum { false, true } bool;
 
@@ -155,6 +165,7 @@ int init()
 
 	// setting attributes from the application to the vertex shader
 	attr_vpos = glGetAttribLocation(program, "v_pos");
+	// if this fails and there is no problem in the attribute piping, check if it was optimized out in the shader
 	if(attr_vpos == -1) { fprintf(stderr, "Setting shader attribute failed (v_pos)\n"); return false; }
 	attr_vtex = glGetAttribLocation(program, "v_tex");
 	if(attr_vtex == -1) { fprintf(stderr, "Setting shader attribute failed (v_tex)\n"); return false; }
@@ -249,13 +260,13 @@ void init_freetype()
 		fprintf(stderr, "Freetype could not load face! Quitting...\n");
 		shutdown_glfw_and_exit(-1);
 	}
-	FT_Set_Char_Size(ft_face, 0, (46 * 64), dpi, dpi);
-	FT_Set_Pixel_Sizes(ft_face, 0, 46);
+	FT_Set_Char_Size(ft_face, 0, (pt * 64), dpi, dpi);
+	FT_Set_Pixel_Sizes(ft_face, 0, pt);
 }
 
 void load_char_texture()
 {
-	FT_Load_Char(ft_face, 'a', FT_LOAD_RENDER);
+	FT_Load_Char(ft_face, char_to_display, FT_LOAD_RENDER);
 	FT_GlyphSlot slot = ft_face->glyph;
 	if(!slot) {
 		fprintf(stderr, "Freetype could not get Glyph! Quitting...\n");
